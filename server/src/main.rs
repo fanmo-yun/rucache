@@ -1,0 +1,4 @@
+mod nosql;
+
+fn main() {
+}
