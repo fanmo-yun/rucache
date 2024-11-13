@@ -1,10 +1,11 @@
 use std::{io::{self, BufRead, BufReader, BufWriter, Write}, net::TcpStream};
 
-fn read_stdin() -> Vec<u8> {
+fn read_stdin() -> String {
     let mut buf = String::new();
     let _ = io::stdin().read_line(&mut buf).unwrap();
     let buf_trim = buf.trim_end();
-    buf_trim.as_bytes().to_vec()
+    let final_buf = format!("{}\n", buf_trim);
+    final_buf
 }
 
 fn main() {
@@ -16,10 +17,22 @@ fn main() {
     let mut read_buf: Vec<u8> = Vec::new();
 
     loop {
+        print!(":P ");
+        io::stdout().flush().unwrap();
         let will_write_message = read_stdin();
 
-        writer.write_all(&will_write_message).unwrap();
+        if &will_write_message == "exit\n" {
+            writer.write_all(&will_write_message.as_bytes()).unwrap();
+            writer.flush().unwrap();
+            break;
+        }
+
+        writer.write_all(&will_write_message.as_bytes()).unwrap();
+        writer.flush().unwrap();
 
         let size = reader.read_until(b'\n', &mut read_buf).unwrap();
+        print!("{}", String::from_utf8_lossy(&read_buf[..size]));
+        io::stdout().flush().unwrap();
+        read_buf.clear();
     }
 }

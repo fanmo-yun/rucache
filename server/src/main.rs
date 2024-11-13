@@ -25,6 +25,7 @@ fn handle_client(stream: TcpStream) {
         }
 
         match parts[0] {
+            "exit" => break,
             _ => writer.write_all("Unknown command\n".as_bytes()).unwrap(),
         }
         writer.flush().unwrap();
