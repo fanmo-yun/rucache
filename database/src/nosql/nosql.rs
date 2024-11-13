@@ -24,7 +24,7 @@ impl RuCache {
 
     pub fn len(&self) -> usize { self.data.len() }
 
-    pub fn put(&mut self, k: String, v: Value) -> Result<bool, bool> {
+    pub fn put(&mut self, k: String, v: Value) -> Result<bool, ()> {
         let new_node = Node::new(k, v);
         
         let pos = self.data.binary_search_by(|n| n.k.cmp(&new_node.k));
